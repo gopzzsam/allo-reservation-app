@@ -6,81 +6,64 @@ export default function Home() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
 
-  const handleSubmit = async (
-    e: React.FormEvent
-  ) => {
-    e.preventDefault();
-
+  const handleSubmit = async () => {
     try {
-      const response = await fetch(
-        "/api/reservations",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type":
-              "application/json",
-          },
-          body: JSON.stringify({
-            name,
-            email,
-          }),
-        }
-      );
+      const response = await fetch("/api/reservations", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          productId: 1,
+        }),
+      });
+
+      const data = await response.json();
 
       if (response.ok) {
-        alert("Reservation Added!");
-
-        setName("");
-        setEmail("");
+        alert("Reservation Success");
+        console.log(data);
       } else {
-        alert("Failed to add reservation");
+        alert(data.error || "Reservation Failed");
       }
-    } catch (error) {
-      console.log(error);
 
+    } catch (error) {
+      console.error(error);
       alert("Something went wrong");
     }
   };
 
   return (
-    <main className="p-10">
-      <h1 className="text-3xl font-bold mb-6">
-        Reservation Form
-      </h1>
+    <div style={{ padding: "40px" }}>
+      <h1>Inventory Reservation System</h1>
 
-      <form
-        onSubmit={handleSubmit}
-        className="flex flex-col gap-4 max-w-md"
-      >
-        <input
-          type="text"
-          placeholder="Enter Name"
-          value={name}
-          onChange={(e) =>
-            setName(e.target.value)
-          }
-          className="border p-3 rounded"
-          required
-        />
+      <br />
 
-        <input
-          type="email"
-          placeholder="Enter Email"
-          value={email}
-          onChange={(e) =>
-            setEmail(e.target.value)
-          }
-          className="border p-3 rounded"
-          required
-        />
+      <input
+        type="text"
+        placeholder="Enter Name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
 
-        <button
-          type="submit"
-          className="bg-black text-white p-3 rounded"
-        >
-          Submit
-        </button>
-      </form>
-    </main>
+      <br />
+      <br />
+
+      <input
+        type="email"
+        placeholder="Enter Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+
+      <br />
+      <br />
+
+      <button onClick={handleSubmit}>
+        Reserve Product
+      </button>
+    </div>
   );
 }

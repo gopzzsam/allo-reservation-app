@@ -1,33 +1,88 @@
-# Restaurant Reservation System
+# Inventory Reservation System
 
-A full-stack restaurant reservation application built using:
+## Tech Stack
 
 - Next.js
 - Prisma
-- PostgreSQL
-- Tailwind CSS
+- SQLite
+- TypeScript
+- Vercel
+
+---
 
 ## Features
 
-- Create reservations
-- Store reservation details in database
-- REST API integration
-- Modern responsive UI
+- Product reservation system
+- Inventory stock management
+- Concurrency-safe reservations
+- Prisma transaction handling
+- Reservation expiry logic
+- Prevent overselling
 
-## Technologies Used
+---
 
-- Next.js
-- Prisma ORM
-- PostgreSQL
-- Tailwind CSS
+## Run Locally
 
-## Run Project
+Install dependencies:
 
 ```bash
 npm install
+```
+
+Generate Prisma client:
+
+```bash
+npx prisma generate
+```
+
+Push database schema:
+
+```bash
+npx prisma db push
+```
+
+Run development server:
+
+```bash
 npm run dev
 ```
 
-## Database
+---
 
-Configured using Prisma and PostgreSQL.
+## Environment Variables
+
+Create a `.env` file:
+
+```env
+DATABASE_URL="file:./dev.db"
+```
+
+---
+
+## Concurrency Handling
+
+This project uses Prisma transactions and atomic stock decrement operations to prevent overselling during simultaneous reservations.
+
+---
+
+## Reservation Expiry
+
+Reservations expire after 10 minutes and inventory is released back automatically.
+
+---
+
+## Tradeoffs
+
+- SQLite used for simplicity
+- Redis locking not implemented
+- Background cleanup jobs not added
+
+---
+
+## Deployment
+
+Live Demo:
+https://allo-reservation-app.vercel.app/
+
+GitHub Repository:
+https://github.com/gopzzsam/allo-reservation-app
